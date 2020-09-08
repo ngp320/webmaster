@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qianfeng.openapi.web.master.mapper.CustomerMapper">
+
+    <insert id="insertCustomer" parameterType="com.qianfeng.openapi.web.master.pojo.Customer">
+        <selectKey keyProperty="id" resultType="long" >
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO customer (username,password,nickname,address,money,state) values
+        (#{username},#{password},#{nickname},#{address},#{money},#{state})
+    </insert>
+
+    <update id="updateCustomer" parameterType="com.qianfeng.openapi.web.master.pojo.Customer">
+        UPDATE customer
+        set
+        <trim suffixOverrides=",">
+            <if test="username !=null and username!=''">
+                username = #{username},
+            </if>
+            <if test="password !=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="nickname !=null and nickname!=''">
+                nickname = #{nickname},
+            </if>
+            <if test="address !=null and address!=''">
+                address = #{address},
+            </if>
+            <if test="money !=null">
+                money = #{money},
+            </if>
+            <if test="state !=null ">
+                state = #{state},
+            </if>
+        </trim>
+        WHERE
+            id = #{id}
+    </update>
+    
+    <delete id="deleteCustomer" parameterType="long">
+        DELETE FROM customer where id = #{id}
+    </delete>
+
+    <select id="getCustomerById" parameterType="long" resultType="com.qianfeng.openapi.web.master.pojo.Customer">
+        SELECT id,username,password,nickname,address,money,state from customer where id = #{id}
+    </select>
+
+    <select id="getAllCustomers" parameterType="long" resultType="com.qianfeng.openapi.web.master.pojo.Customer">
+        SELECT id,username,password,nickname,address,money,state from customer
+    </select>
+</mapper>
